@@ -28,7 +28,7 @@ jobs:
       - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './.output/public'  # путь к собранным файлам
+          path: './dist'  # для Nuxt 4 путь обычно './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
