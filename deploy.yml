@@ -1,21 +1,36 @@
-name: Deploy to GitHub Pages
+name: Deploy Nuxt 4 to GitHub Pages
 
 on:
   push:
     branches:
-      - main
+      - master  # отслеживаем ветку master
 
 jobs:
-  build_and_deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - run: npm install
-      - run: npx nuxt build --preset github_pages
-      - name: Upload artifact
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'  # укажите нужную версию Node.js
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci  # или npm install
+
+      - name: Build Nuxt app
+        run: npx nuxt generate
+
+      - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./.output/public
+          path: './.output/public'  # путь к собранным файлам
+
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
         
